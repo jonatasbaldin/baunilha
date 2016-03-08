@@ -1,6 +1,6 @@
 # Baunilha - Leitor de Tweets
 An application that reads someone's tweets. Built with Python, Flask, Bootstrap, RespoinsiveVoice.JS and love.     
-The application may be running under [http://baunilha.deployeveryday.com](my blog domain).
+The application may be running under [my blog domain](http://baunilha.deployeveryday.com).
 
 ## How to deploy?
 I'm going to automate the whole process, so stay tuned for more information.    
