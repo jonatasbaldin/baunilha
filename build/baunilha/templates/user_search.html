@@ -1,0 +1,34 @@
+<div class="well">
+  <center>
+    {% if error %}
+      <h2> <span class="label label-danger">{{ message }}</span> </h2>
+      <br />
+    {% endif %}
+
+    {# displays a default image #}
+    {% if not user_img %}
+      <img src="{{ url_for('static', filename='default_twitter.png') }}" alt="User Image" width="200px" height="200px">
+    {% else %}
+      <img src="{{ user_img }}" alt="{{ user }}" width="200px" height="200px">
+    {% endif %}
+
+    <br />
+    <br />
+
+    <form method="POST">
+      {{ form.csrf_token }}
+      <div class="input-group">
+        {% if user %}
+          {{ form.user(class_="form-control", placeholder=user, aria_describedby="basic-addon1") }}
+        {% else %}
+          {{ form.user(class_="form-control", placeholder="@user", aria_describedby="basic-addon1") }}
+        {% endif %}
+        <br />
+        <br />
+
+        {{ form.submit_ptbr(class_="btn btn-default") }}
+        {{ form.submit_en(class_="btn btn-default") }}
+      </div>
+    </form>
+  </center>
+</div>

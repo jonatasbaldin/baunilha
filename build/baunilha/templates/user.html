@@ -1,0 +1,59 @@
+{% include 'head.html' %}
+
+<body>
+
+  <div class="container theme-showcase" role="main">
+    {% include 'header.html' %}
+
+    {% include 'user_search.html' %}
+
+    <div class="well">
+      {# If there's multiple tweets, show all of them #}
+      {% if tweets %}
+      {% for item in tweets %}
+      <div >
+        <center>
+          <div class="well"> 
+            <h2>
+              {# Generates a <p> that, when clicked, use ResponsiveVoice.JS to read it, the read text removes line breaks and sigle quotes.
+                 Also, to share on twitter, the text is truncated in 80 characters.
+                 The same to single tweets as well.
+              #} 
+              {% if lang == 'en' %}
+              <p onclick="responsiveVoice.speak('{{ item[1] |replace("\n", "") |replace("'", "") }}', 'US English Female');" >
+              {% else %}
+              <p onclick="responsiveVoice.speak('{{ item[1] |replace("\n", "") |replace("'", "") }}', 'Brazilian Portuguese Female');" >
+              {% endif %}
+                <a href="" style="color: inherit;" onClick="return false;"> {{ item[1] }} </a>
+              </p>
+            </h2>
+              <a href="https://twitter.com/intent/tweet?text=ESCUTE ISSO: {{ item[1] |truncate(80) }}&url=http://baunilha.deployeveryday.com/{{ user }}/status/{{ item[0] }}&via={{ user }}" rel="nofollow" target="_blank" title="Share on Twitter" class="btn btn-twitter"><i class="fa fa-twitter"></i>Compartilhe no Twitter</a>
+            </div>
+          <center>
+        </div>
+      {% endfor %}
+      {% endif %}
+
+      {# If there's single tweet, show it only #}
+      {% if single_tweet %}
+      <div >
+        <center>
+          <div class="well"> 
+            <h2>
+              <p onclick="responsiveVoice.speak('{{ single_tweet | replace("\n", "")|replace("'", "") }}', 'Brazilian Portuguese Female');" >
+                <a href="" style="color: inherit;" onClick="return false;"> {{ single_tweet }} </a>
+              </p>
+            </h2>
+              <a href="https://twitter.com/intent/tweet?text=ESCUTE ISSO: {{ single_tweet|truncate(80) }}&url=http://baunilha.deployeveryday.com/{{ user }}/status/{{ single_tweet_id }}&via={{ user }}" rel="nofollow" target="_blank" title="Share on Twitter" class="btn btn-twitter"><i class="fa fa-twitter"></i>Compartilhe no Twitter</a>
+            </div>
+          <center>
+        </div>
+      {% endif %}
+
+    </div>
+ 
+  {% include 'footer.html' %}
+
+</body>
+
+<html>
