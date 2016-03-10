@@ -1,0 +1,16 @@
+[Unit]
+Description=uwsgi
+After=syslog.target
+
+[Service]
+ExecStart={{ app_venv }}/bin/uwsgi --ini {{ app_dir }}/build/uwsgi.ini
+ExecReload={{ app_venv }}/bin/uwsgi --reload {{ app_dir }}/build/uwsgi.ini
+RuntimeDirectory=nginx
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target

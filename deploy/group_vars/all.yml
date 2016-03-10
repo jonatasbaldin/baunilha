@@ -1,0 +1,22 @@
+---
+# Mics
+# /opt/baunilha is used by default in Vagrant file
+# if changed here, make sure to change there
+app_name: baunilha
+app_dir: "/opt/{{ app_name }}"
+app_venv: "{{ app_dir }}/venv"
+
+# Provision
+group: nginx
+user: nginx
+
+# NGINX
+nginx_log_dir: "/var/log/nginx"
+nginx_upstream_uwsgi: uwsgicluster
+nginx_app_log_dir: "/var/log/nginx/{{ app_name }}"
+nginx_app_port: 80
+
+# uWSGI
+uwsgi_socket: 127.0.0.1:8080
+uwsgi_module: runserver:app
+uwsgi_master: 1

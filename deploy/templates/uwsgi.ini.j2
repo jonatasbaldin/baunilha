@@ -1,0 +1,7 @@
+[uwsgi]
+chdir = {{ app_dir }}/build
+socket = {{ uwsgi_socket }}
+module = {{ uwsgi_module }}
+uid = {{ user }}
+gid = {{ group }}
+master = {{ uwsgi_master }}

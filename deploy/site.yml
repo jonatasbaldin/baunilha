@@ -1,0 +1,36 @@
+---
+- hosts: all
+  become: yes
+
+  handlers:
+    - name: Restart uwsgi
+      service: name=uwsgi state=restarted
+
+  # tasks to be executed before nginx
+  pre_tasks:
+    - include: provision.yml
+    - include: uwsgi.yml
+
+  roles:
+  # nginx role from ansible-galaxy
+  - role: jdauphant.nginx
+    nginx_user: "{{ user }}"
+
+    nginx_http_params:
+      - access_log "{{ nginx_log_dir }}/access.log"
+      - error_log "{{ nginx_log_dir }}/error.log"
+
+    nginx_configs:
+      upstreams:
+        - upstream "{{ nginx_upstream_uwsgi }}" { server "{{ uwsgi_socket }}"; }
+
+    nginx_sites:
+      baunilha:
+        - listen "{{ nginx_app_port }}"
+        # from host_groups/<host>
+        - server_name "{{ server_name }}"
+        - root "{{ app_dir }}/build"
+        - location = /static/ { alias "{{ app_dir }}/static/"; }
+        - location / { include uwsgi_params; uwsgi_pass "{{ nginx_upstream_uwsgi }}"; }
+        - access_log "{{ nginx_app_log_dir }}/access.log"
+        - error_log "{{ nginx_app_log_dir }}/error.log"

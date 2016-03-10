@@ -1,0 +1,11 @@
+---
+server_name: example.com
+  
+# CSRF Secret
+app_secret_key: 'secret key'
+     
+# Twitter API Keys
+app_twitter_consumer_key: 'twitter_consumer_key'
+app_twitter_consumer_secret: 'twitter_consume_secret'
+app_twitter_access_token_key: 'twitter_access_token_key'
+app_twitter_access_token_secret: 'twitter_access_token_secret'

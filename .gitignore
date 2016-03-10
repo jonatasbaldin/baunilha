@@ -2,8 +2,8 @@ __pycache__/
 *.pyc
 *.swp
 venv/
+vagrant-venv/
+build/uwsgi.ini
 build/instance/*
 !build/instance/config.sample
 .vagrant
-deploy/
-Vagrantfile

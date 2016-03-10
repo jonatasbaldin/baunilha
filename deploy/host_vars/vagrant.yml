@@ -1,0 +1,4 @@
+---
+server_name: baunilha.test
+
+app_venv: "{{ app_dir }}/vagrant-venv"

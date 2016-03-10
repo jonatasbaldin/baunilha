@@ -1,0 +1,42 @@
+---
+- name: Disable SELinux
+  selinux: state=disabled
+
+- name: Update server
+  yum: name=* state=latest
+
+- name: Install packages
+  yum: name=python-virtualenv,gcc,git state=present
+
+- name: Add nginx group
+  group: name={{ user }} state=present
+
+- name: Add nginx user
+  user: name={{ user }} group={{ group }} state=present
+
+- name: Create log dir
+  file: path={{ nginx_app_log_dir }} owner={{ user }} group={{ group }} state=directory
+
+- name: Create log files
+  # create an empty file with no content
+  # if exists, do nothing (force=no)
+  copy: dest={{ nginx_app_log_dir }}/{{ item }} owner={{ user }} group={{ group }} mode=0644 force=no content=''
+  with_items:
+    - access.log
+    - error.log
+
+- name: Get app code
+  # get the code if it's not vagrant
+  # since vagrant uses synced_folder
+  git: repo="https://github.com/jonatasbaldin/{{ app_name }}.git" dest={{ app_dir }}
+  # just get the repo code if 'vagrant' group do not exists in group_names (listed in inventory file)
+  when: "'vagrant' not in group_names"
+
+- name: Copy API keys
+  template: src=config.py.j2 dest={{ app_dir }}/build/instance/config.py owner={{ user }} group={{ user }}
+  # just copy API keys template if 'production' group exists in group_names (listed in inventory file)
+  when: "'production' in group_names"
+  notify: Restart uwsgi
+
+- name: Create virtualenv
+  pip: virtualenv={{ app_venv }} virtualenv_command=/bin/virtualenv requirements={{ app_dir }}/build/requirements.txt

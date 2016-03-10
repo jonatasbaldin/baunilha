@@ -1,0 +1,8 @@
+---
+- name: Copy uwsgi template
+  template: src=uwsgi.ini.j2 dest={{ app_dir }}/build/uwsgi.ini
+  notify: Restart uwsgi
+
+- name: Copy uwsgi systemd template
+  template: src=uwsgi.service.j2 dest=/etc/systemd/system/uwsgi.service
+  notify: Restart uwsgi
